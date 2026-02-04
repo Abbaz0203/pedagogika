@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umumiy Pedagogika - Ta'lim Platformasi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS uslublari o'zgarishsiz qoldi */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0f4c3a; --primary-light: #1a7d5f; --accent: #e6b87d; --accent-dark: #d4a05c;
+            --bg-main: #0a1f19; --bg-light: #f8f6f2; --text-light: #ffffff; --text-dark: #1a1a1a;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-light); }
+        #welcomeScreen { height: 100vh; display: flex; align-items: center; justify-content: center; 
+            background: linear-gradient(135deg, #0a1f19 0%, #1a3a2e 50%, #0f4c3a 100%); }
+        .welcome-content { text-align: center; z-index: 10; animation: fadeInUp 1s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .logo { width: 120px; height: 120px; background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 30px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; animation: pulse 3s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        h1 { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; letter-spacing: -2px; }
+        .welcome-subtitle { font-size: 1.4rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 3rem; }
+        .start-button { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: var(--text-dark);
+            border: none; padding: 1.5rem 4rem; font-size: 1.2rem; font-weight: 600; border-radius: 50px;
+            cursor: pointer; transition: all 0.4s ease; box-shadow: 0 10px 40px rgba(230, 184, 125, 0.4); }
+        .start-button:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 50px rgba(230, 184, 125, 0.6); }
+        #mainScreen, #filesView, #authorView { display: none; min-height: 100vh; background: var(--bg-light); }
+        .main-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); padding: 2rem; }
+        .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .header-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--text-light); }
+        .back-home { background: rgba(255, 255, 255, 0.15); color: white; border: none;
+            padding: 0.75rem 2rem; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;
+            backdrop-filter: blur(10px); font-size: 1rem; }
+        .back-home:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-3px); }
+        
+        .footer-nav { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); padding: 2rem; margin-top: 4rem; }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .footer-button { background: rgba(255, 255, 255, 0.15); color: white; border: 2px solid rgba(255, 255, 255, 0.3); padding: 1rem 2.5rem; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; font-weight: 500; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .footer-button:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-3px); }
+
+        .sections-container { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
+        .sections-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--text-dark); margin-bottom: 2rem; text-align: center; }
+        .sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .section-card { background: white; border-radius: 20px; padding: 2.5rem; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 2px solid transparent; }
+        .section-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); border-color: var(--accent); }
+        .section-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .section-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text-dark); margin-bottom: 0.75rem; }
+        .section-card p { color: #666; line-height: 1.6; margin-bottom: 1rem; }
+        .file-count { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-light); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 500; color: var(--text-dark); }
+        
+        .files-container { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
+        .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .file-card { background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; }
+        .file-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); border-color: var(--accent); }
+        .file-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b6b, #ee5a6f); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1rem; }
+        .file-name { font-weight: 600; color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.1rem; }
+        
+        .author-container { max-width: 1200px; margin: 3rem auto; padding: 0 2rem; }
+        .author-card { background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); }
+        .author-header { display: grid; grid-template-columns: 300px 1fr; gap: 3rem; margin-bottom: 3rem; }
+        .author-photo { width: 100%; border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); cursor: pointer; }
+        .author-info h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+        .info-row { display: grid; grid-template-columns: 200px 1fr; padding: 0.75rem 0; border-bottom: 1px solid var(--bg-light); }
+        .info-label { font-weight: 600; color: var(--text-dark); }
+        .info-value { color: #666; }
+        
+        .timeline { position: relative; padding-left: 2rem; border-left: 3px solid var(--accent); }
+        .timeline-item { position: relative; padding-bottom: 2rem; padding-left: 1rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2.6rem; top: 0.5rem; width: 15px; height: 15px; background: var(--accent); border-radius: 50%; border: 3px solid white; }
+        
+        @media (max-width: 968px) {
+            h1 { font-size: 2.5rem; }
+            .author-header { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div id="welcomeScreen">
+        <div class="welcome-content">
+            <div class="logo">📚</div>
+            <h1>Umumiy Pedagogika</h1>
+            <p class="welcome-subtitle">Ta'lim-tarbiya sohasidagi eng to'liq o'quv materiallari</p>
+            <button class="start-button" onclick="startPlatform()">Boshlash</button>
+        </div>
+    </div>
+
+    <div id="mainScreen">
+        <div class="main-header">
+            <div class="header-content">
+                <h2 class="header-title">📚 Umumiy Pedagogika Platformasi</h2>
+                <button class="back-home" onclick="goToWelcome()">← Orqaga</button>
+            </div>
+        </div>
+        <div class="sections-container">
+            <h2 class="sections-title">O'quv Materiallari Bo'limlari</h2>
+            <div class="sections-grid">
+                <div class="section-card" onclick="openSection('muallif')">
+                    <div class="section-icon">👤</div>
+                    <h3>Muallif</h3>
+                    <p>Darslik muallifi haqida to'liq ma'lumot</p>
+                    <span class="file-count">📄 3 ta hujjat</span>
+                </div>
+                <div class="section-card" onclick="openSection('maruzalar')">
+                    <div class="section-icon">📖</div>
+                    <h3>Ma'ruzalar</h3>
+                    <p>Mavzular bo'yicha nazariy ma'ruzalar</p>
+                    <span class="file-count">📄 15 ta fayl</span>
+                </div>
+                <div class="section-card" onclick="openSection('amaliy')">
+                    <div class="section-icon">✍️</div>
+                    <h3>Amaliy (Seminarlar)</h3>
+                    <p>Amaliy seminar mashg'ulotlari</p>
+                    <span class="file-count">📄 30 ta fayl</span>
+                </div>
+                <div class="section-card" onclick="openSection('taqdimotlar')">
+                    <div class="section-icon">📊</div>
+                    <h3>Taqdimotlar</h3>
+                    <p>Vizual taqdimot materiallari</p>
+                    <span class="file-count">📄 15 ta fayl</span>
+                </div>
+                <div class="section-card" onclick="openSection('oquv-dasturi')">
+                    <div class="section-icon">📋</div>
+                    <h3>O'quv Dasturi</h3>
+                    <p>Fanining to'liq o'quv dasturi</p>
+                    <span class="file-count">📄 1 ta fayl</span>
+                </div>
+                <div class="section-card" onclick="openSection('silabus')">
+                    <div class="section-icon">📑</div>
+                    <h3>Silabus</h3>
+                    <p>Fanning ishchi o'quv dasturi</p>
+                    <span class="file-count">📄 1 ta fayl</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="filesView">
+        <div class="main-header">
+            <div class="header-content">
+                <h2 class="header-title" id="sectionTitle">Fayllar</h2>
+                <button class="back-home" onclick="goToMain()">← Orqaga</button>
+            </div>
+        </div>
+        <div class="files-container">
+            <div class="files-grid" id="filesGrid"></div>
+        </div>
+    </div>
+
+    <div id="authorView">
+        <div class="main-header">
+            <div class="header-content">
+                <h2 class="header-title">Muallif Haqida</h2>
+                <button class="back-home" onclick="goToMain()">← Orqaga</button>
+            </div>
+        </div>
+        <div class="author-container">
+            <div class="author-card">
+                <div class="author-header">
+                    <img src="assets/muallif_rasm.jpg" alt="Muallif" class="author-photo">
+                    <div class="author-info">
+                        <h2>Sobirov Dilshod To'xtamurod o'g'li</h2>
+                        <h3>Katta o'qituvchi, Magistr</h3>
+                        <div class="info-row"><div class="info-label">Tug'ilgan:</div><div class="info-value">17.05.1991, Toshkent</div></div>
+                        <div class="info-row"><div class="info-label">Lavozim:</div><div class="info-value">TAFU katta o'qituvchisi</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Platformani boshqarish funksiyalari
+        function startPlatform() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('mainScreen').style.display = 'block';
+        }
+
+        function goToWelcome() {
+            location.reload(); // Sahifani yangilab boshiga qaytaradi
+        }
+
+        function goToMain() {
+            document.getElementById('filesView').style.display = 'none';
+            document.getElementById('authorView').style.display = 'none';
+            document.getElementById('mainScreen').style.display = 'block';
+        }
+
+        function openFile(filePath) {
+            window.open(filePath, '_blank');
+        }
+
+        function openSection(sectionKey) {
+            // To'g'ridan-to'g'ri ochiladigan bo'limlar
+            if (sectionKey === 'muallif') {
+                document.getElementById('mainScreen').style.display = 'none';
+                document.getElementById('authorView').style.display = 'block';
+                return;
+            }
+
+            if (sectionKey === 'oquv-dasturi') {
+                openFile("oquv-dasturi/1.pdf"); // Siz aytgan papka manzili
+                return;
+            }
+
+            if (sectionKey === 'silabus') {
+                openFile("silabus/1.pdf"); // Siz aytgan papka manzili
+                return;
+            }
+
+            // Ro'yxat ko'rinishida ochiladigan bo'limlar
+            let files = [];
+            let title = '';
+
+            if (sectionKey === 'maruzalar') {
+                title = "Ma'ruzalar";
+                for (let i = 1; i <= 15; i++) {
+                    files.push({ name: `${i}-mavzu: Ma'ruza`, path: `Ma'ruzalar/${i}-mavzu.pdf` });
+                }
+            } else if (sectionKey === 'amaliy') {
+                title = "Amaliy Mashg'ulotlar";
+                for (let i = 1; i <= 30; i++) {
+                    files.push({ name: `${i}-Seminar`, path: `amaliy/${i}-Seminar.pdf` });
+                }
+            } else if (sectionKey === 'taqdimotlar') {
+                title = "Taqdimotlar";
+                for (let i = 1; i <= 15; i++) {
+                    files.push({ name: `Taqdimot ${i}`, path: `Taqdimot-15/Taqdimot (${i}).pdf` });
+                }
+            }
+
+            showFilesList(title, files);
+        }
+
+        function showFilesList(title, files) {
+            document.getElementById('mainScreen').style.display = 'none';
+            document.getElementById('filesView').style.display = 'block';
+            document.getElementById('sectionTitle').textContent = title;
+
+            const grid = document.getElementById('filesGrid');
+            grid.innerHTML = '';
+
+            files.forEach(file => {
+                const card = document.createElement('div');
+                card.className = 'file-card';
+                card.onclick = () => openFile(file.path);
+                card.innerHTML = `
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">${file.name}</div>
+                    <div style="color:#999; font-size:0.8rem">PDF HUJJAT</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
